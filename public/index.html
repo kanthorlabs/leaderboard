@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+  </head>
+  <body>
+    <h1>Leaderboard</h1>
+    <ul id="top">
+      <li>Be the first one to score!</li>
+    </ul>
+
+    <!-- Include the Socket.io client script -->
+    <script
+      src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+      integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const query = new URLSearchParams(window.location.search);
+      const board = query.get("board") || "default";
+      const username = query.get("username");
+      const top_count = Number(query.get("top_count") || 10);
+
+      const socket = io(`/board-${board}`, {
+        query: { username, top_count },
+      });
+
+      // Listen for leaderboard updates
+      socket.on("leaderboard.updated", ({ top }) => {
+        if (Array.isArray(top) && top.length > 0) {
+          const topEl = document.getElementById("top");
+          topEl.innerHTML = "";
+          for (let rank of top) {
+            const li = document.createElement("li");
+            li.innerHTML = render(rank, username);
+            topEl.appendChild(li);
+          }
+        }
+      });
+
+      socket.emit("leaderboard.subscribed");
+
+      function render(score, highlight) {
+        if (!score) return "";
+        const line = `#${score.rank} ${score.username}: ${score.score} point(s)`;
+        return highlight === score.username ? `<b>${line}</b>` : line;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "name": "leaderboard",
+  "version": "2024.12.14",
+  "description": "A scoring system that displays scores and serves as a leaderboard",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kanthorlabs/leaderboard.git"
+  },
+  "keywords": [
+    "leaderboard",
+    "websocket",
+    "nodejs",
+    "socketio",
+    "nginx"
+  ],
+  "author": "Tuan Nguyen <tuan.nguyen930708@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kanthorlabs/leaderboard/issues"
+  },
+  "homepage": "https://github.com/kanthorlabs/leaderboard#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "ts-jest": "^29.2.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.3.0",
+    "ajv": "^8.17.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "ioredis": "^5.4.1",
+    "socket.io": "^4.8.1"
+  }
+}
