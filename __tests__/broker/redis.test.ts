@@ -86,23 +86,19 @@ describe("RedisBroker", () => {
     });
   });
 
-  // describe("sub", () => {
-  //   it("should subscribe to the given channel and execute the given handler", async () => {
-  //     const channel = "channel_test";
+  describe("sub", () => {
+    it("should subscribe to the given channel and execute the given handler", async () => {
+      const channel = "channel_test";
 
-  //     const fn = jest.fn();
-  //     const subscribeSpy = jest
-  //       .spyOn(subscriber, "subscribe")
-  //       .mockImplementation(fn);
-  //     fn();
+      const subscribeSpy = jest.spyOn(subscriber, "subscribe");
 
-  //     const handler = jest.fn();
-  //     await broker.sub(channel, handler);
+      const handler = jest.fn();
+      await broker.sub(channel, handler);
 
-  //     expect(subscribeSpy).toHaveBeenCalledWith(channel, expect.any(Function));
-  //     expect(handler).not.toHaveBeenCalled();
-  //   });
-  // });
+      expect(subscribeSpy).toHaveBeenCalledWith(channel, expect.any(Function));
+      expect(handler).not.toHaveBeenCalled();
+    });
+  });
 
   describe("unsub", () => {
     it("should unsubscribe from the given channel", async () => {

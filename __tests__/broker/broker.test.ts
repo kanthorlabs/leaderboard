@@ -107,38 +107,40 @@ describe("Broker", () => {
     });
   });
 
-  // describe("sub", () => {
-  //   it("should subscribe to the given channel and execute the given handler", async () => {
-  //     const channel = "channel_test";
-
-  //     const subscribeSpy = jest
-  //       .spyOn(subscriber, "subscribe")
-  //       .mockResolvedValue(null);
-  //     const board = new Broker({
-  //       provider: BROKER_PROVIDER.REDIS,
-  //       publisher,
-  //       subscriber,
-  //     });
-
-  //     const handler = jest.fn();
-  //     await board.sub(channel, handler);
-
-  //     expect(subscribeSpy).toHaveBeenCalledWith(channel, expect.any(Function));
-  //   });
-  // });
-
-  describe("unsub", () => {
-    it("should unsubscribe from the given channel", async () => {
+  describe("sub", () => {
+    it("should subscribe to the given channel and execute the given handler", async () => {
       const channel = "channel_test";
 
-      const unsubscribeSpy = jest
-        .spyOn(subscriber, "unsubscribe")
-        .mockResolvedValue(null);
       const board = new Broker({
         provider: BROKER_PROVIDER.REDIS,
         publisher,
         subscriber,
       });
+
+      const subscribeSpy = jest
+        .spyOn((board as any).broker, "sub")
+        .mockResolvedValue(null);
+
+      const handler = jest.fn();
+      await board.sub(channel, handler);
+
+      expect(subscribeSpy).toHaveBeenCalledWith(channel, expect.any(Function));
+    });
+  });
+
+  describe("unsub", () => {
+    it("should unsubscribe from the given channel", async () => {
+      const channel = "channel_test";
+
+      const board = new Broker({
+        provider: BROKER_PROVIDER.REDIS,
+        publisher,
+        subscriber,
+      });
+
+      const unsubscribeSpy = jest
+        .spyOn((board as any).broker, "unsub")
+        .mockResolvedValue(null);
 
       await board.unsub(channel);
       expect(unsubscribeSpy).toHaveBeenCalledWith(channel);
