@@ -61,10 +61,10 @@ export default class Broker implements IBroker {
   }
 }
 
-export function create() {
+export async function create() {
   return new Broker({
     provider: conf.provider,
-    publisher: redisProvider.create(conf.publisher.redis),
-    subscriber: redisProvider.create(conf.subscriber.redis),
+    publisher: await redisProvider.create(conf.publisher.redis),
+    subscriber: await redisProvider.create(conf.subscriber.redis),
   });
 }

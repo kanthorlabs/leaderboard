@@ -6,7 +6,7 @@ import { IBroker } from "../broker";
 import useBoardActions from "./board";
 import { LEADERBOARD } from "../events";
 
-export function create(board: IBoard, broker: IBroker) {
+export async function create(board: IBoard, broker: IBroker) {
   const boardActions = useBoardActions(board);
 
   const server = express();

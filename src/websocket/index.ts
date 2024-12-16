@@ -1,16 +1,16 @@
-import { Redis } from "ioredis";
 import { Server } from "socket.io";
 import { createShardedAdapter } from "@socket.io/redis-adapter";
-import { IBoard } from "./board";
-import { IBroker } from "./broker";
-import { LEADERBOARD } from "./events";
+import * as redisProvider from "../providers/redis";
+import { IBoard } from "../board";
+import { IBroker } from "../broker";
+import { LEADERBOARD } from "../events";
+import conf from "./config";
 
-export function create(server: any, board: IBoard, broker: IBroker) {
-  const redispub = new Redis();
-  const redissub = new Redis();
+export async function create(server: any, board: IBoard, broker: IBroker) {
+  const client = await redisProvider.create(conf.baclplane.redis);
 
   const io = new Server(server, {
-    adapter: createShardedAdapter(redispub, redissub),
+    adapter: createShardedAdapter(client, client.duplicate()),
   });
 
   // Set up Socket.io connection event

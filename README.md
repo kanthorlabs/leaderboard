@@ -2,6 +2,14 @@
 
 > A scoring system that displays scores and serves as a leaderboard
 
+## Challenge
+
+### Description
+
+- A leaderboard should display the current standings of all participants.
+- The leaderboard should update promptly as scores change.
+- A leaderboard should display the current standings of all participants in real-time.
+
 ## Estimation and Assumption
 
 ### Traffic
@@ -13,8 +21,8 @@
 
 **Future:**
 
-- Assume that we have 30% growth rate, after 3 years we will have 10 million DAU
-- Then we will have 115 RPS and 1150 RPS for normal and peak duration respectively
+- Assume that we have **30% growth rate**, after three years we will have 10 million DAU
+- Then we will have **115 RPS** and **1150 RPS** for normal and peak duration respectively
 
 ### Storage
 
@@ -27,7 +35,7 @@ Other information of users will be stored in a separate place and should be cach
 
 Assume that we need to serve 1000 leaderboards with 1000 records per leaderboard for daily, weekly, monthly and yearly. So that we need storage for 1000 \* 1000 \* 4 = 4000000 records.
 
-So that we need 4000000 \* 28 bytes ~ **112 MB**
+So that we need 4000000 \* 28 bytes ~ **112 MB** on RAM
 
 ### Connections
 

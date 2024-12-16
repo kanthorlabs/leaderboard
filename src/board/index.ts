@@ -71,9 +71,9 @@ export default class Board implements IBoard {
   }
 }
 
-export function create() {
+export async function create() {
   return new Board({
     provider: conf.provider,
-    redis: redisProvider.create(conf.redis),
+    redis: await redisProvider.create(conf.redis),
   });
 }

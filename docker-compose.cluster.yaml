@@ -1,0 +1,70 @@
+services:
+  backend:
+    build: .
+    container_name: leaderboard-backend
+    volumes:
+      - ./.env.docker:/app/.env:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis-cluster-creator
+      
+  redis-node-1:
+    image: redis:7
+    container_name: leaderboard-redis-node-1
+    hostname: redis-node-1
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-2:
+    image: redis:7
+    container_name: leaderboard-redis-node-2
+    hostname: redis-node-2
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-3:
+    image: redis:7
+    container_name: leaderboard-redis-node-3
+    hostname: redis-node-3
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-4:
+    image: redis:7
+    container_name: leaderboard-redis-node-4
+    hostname: redis-node-4
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-5:
+    image: redis:7
+    container_name: leaderboard-redis-node-5
+    hostname: redis-node-5
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-6:
+    image: redis:7
+    container_name: leaderboard-redis-node-6
+    hostname: redis-node-6
+    volumes:
+      - ./docker/redis:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-cluster-creator:
+    image: redis:7
+    container_name: leaderboard-redis-cluster-creator
+    command: redis-cli -p 7000 --cluster create redis-node-1:7000 redis-node-2:7000 redis-node-3:7000 redis-node-4:7000 redis-node-5:7000 redis-node-6:7000 --cluster-replicas 1 --cluster-yes
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6

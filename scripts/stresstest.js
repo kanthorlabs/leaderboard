@@ -8,6 +8,7 @@ export const options = {
   ],
 };
 
+const endpoint = __ENV.ENDPOINT || "http://localhost:8080";
 const board = __ENV.BOARD || genName(32);
 
 const USERNAME_BOOST_RATE = Number(__ENV.USERNAME_BOOST_RATE || 51);
@@ -112,7 +113,7 @@ const usernames = [
 ];
 
 export default async function () {
-  const url = `http://localhost:3000/board/${board}`;
+  const url = `${endpoint}/board/${board}`;
 
   const index = sample(usernames.length);
   const data = {

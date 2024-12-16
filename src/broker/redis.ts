@@ -12,34 +12,22 @@ export default class RedisBroker implements IBroker {
   }
 
   async start(): Promise<void> {
-    if (!this.isPublisherNotConnected()) {
+    if (this.publisher.status !== "ready") {
       await this.publisher.connect();
     }
 
-    if (!this.isSubscriberNotConnected()) {
+    if (this.subscriber.status !== "ready") {
       await this.subscriber.connect();
     }
   }
 
   async stop(): Promise<void> {
-    if (!this.isPublisherNotConnected()) await this.publisher.quit();
-    if (!this.isSubscriberNotConnected()) await this.subscriber.quit();
-  }
-
-  private isPublisherNotConnected() {
-    return (
-      this.publisher.status === "wait" ||
-      this.publisher.status === "end" ||
-      this.publisher.status === "close"
-    );
-  }
-
-  private isSubscriberNotConnected() {
-    return (
-      this.publisher.status === "wait" ||
-      this.publisher.status === "end" ||
-      this.publisher.status === "close"
-    );
+    if (this.publisher.status === "ready") {
+      await this.publisher.quit();
+    }
+    if (this.subscriber.status === "ready") {
+      await this.subscriber.quit();
+    }
   }
 
   async ready(): Promise<void> {

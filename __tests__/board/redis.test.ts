@@ -1,7 +1,7 @@
 // redis.test.ts
 import Redis from "ioredis";
 import RedisBoard from "../../src/board/redis";
-import { BOARD_PROVIDER } from "../../src/board";
+import { BOARD_PROVIDER } from "../../src/board/config";
 
 describe("RedisBoard", () => {
   let redisBoard: RedisBoard;

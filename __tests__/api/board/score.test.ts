@@ -6,8 +6,7 @@ import {
 } from "../../../src/api/board/score";
 import { jest } from "@jest/globals";
 import RedisBoard from "../../../src/board/redis";
-import { BOARD_PROVIDER } from "../../../src/board";
-import { ValidationError } from "../../../src/errors";
+import { BOARD_PROVIDER } from "../../../src/board/config";
 
 describe("useScoreAUser", () => {
   let redisBoard: RedisBoard;

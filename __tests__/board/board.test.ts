@@ -1,5 +1,6 @@
 import Redis from "ioredis";
-import Board, { BOARD_PROVIDER } from "../../src/board";
+import Board from "../../src/board";
+import { BOARD_PROVIDER } from "../../src/board/config";
 
 describe("Board", () => {
   let redis: Redis;
@@ -14,6 +15,9 @@ describe("Board", () => {
     jest.clearAllMocks();
     redis.quit();
   });
+  beforeEach(() => {
+    redis.status = "connecting";
+  });
 
   it("should throw an error for unknown broker provider", () => {
     expect(() => {
@@ -22,6 +26,27 @@ describe("Board", () => {
         redis,
       });
     }).toThrow("Unknown board provider: unknown");
+  });
+
+  it("should throw an error if the start method fails", async () => {
+    const board = new Board({
+      provider: BOARD_PROVIDER.REDIS,
+      redis,
+    });
+
+    jest.spyOn(redis, "connect").mockRejectedValue(new Error("Connect failed"));
+    await expect(board.start()).rejects.toThrow("Connect failed");
+  });
+
+  it("should be ok to be stopped", async () => {
+    const board = new Board({
+      provider: BOARD_PROVIDER.REDIS,
+      redis,
+    });
+
+    redis.status = "ready";
+    jest.spyOn(redis, "quit").mockResolvedValue("OK");
+    await expect(board.stop()).resolves.toBeUndefined();
   });
 
   it("should throw an error if the ready method fails", async () => {
