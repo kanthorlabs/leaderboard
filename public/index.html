@@ -4,12 +4,82 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leaderboard</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f3f4f6;
+        color: #333;
+      }
+
+      #leaderboard-container {
+        text-align: center;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+
+      #leaderboard-container > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #4a90e2;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        font-size: 1.2em;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      li span.rank {
+        width: 50px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      li span.text {
+        flex: 1;
+        text-align: left;
+      }
+
+      li b {
+        color: #e74c3c;
+      }
+    </style>
   </head>
   <body>
-    <h1>Leaderboard</h1>
-    <ul id="top">
-      <li>Be the first one to score!</li>
-    </ul>
+    <div id="leaderboard-container">
+      <h1>Leaderboard</h1>
+      <div>
+        <ul id="top">
+          <li>Be the first one to score!</li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Include the Socket.io client script -->
     <script
@@ -44,8 +114,10 @@
 
       function render(score, highlight) {
         if (!score) return "";
-        const line = `#${score.rank} ${score.username}: ${score.score} point(s)`;
-        return highlight === score.username ? `<b>${line}</b>` : line;
+        if (highlight === score.username) {
+          return `<span class="rank"><b>#${score.rank}</b></span> <span class="text"><b>${score.username}: ${score.score} point(s)</b></span>`;
+        }
+        return `<span class="rank">#${score.rank}</span> <span class="text">${score.username}: ${score.score} point(s)</span>`;
       }
     </script>
   </body>
