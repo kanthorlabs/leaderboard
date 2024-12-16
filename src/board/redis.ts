@@ -8,6 +8,24 @@ export default class RedisBoard implements IBoard {
     this.client = options.redis;
   }
 
+  async start(): Promise<void> {
+    if (!this.isNotConnected()) await this.client.connect();
+  }
+
+  async stop(): Promise<void> {
+    if (!this.isNotConnected) {
+      await this.client.quit();
+    }
+  }
+
+  private isNotConnected() {
+    return (
+      this.client.status === "wait" ||
+      this.client.status === "end" ||
+      this.client.status === "close"
+    );
+  }
+
   async ready(): Promise<void> {
     await this.client.ping();
   }

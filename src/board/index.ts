@@ -1,5 +1,7 @@
 import Redis, { Cluster } from "ioredis";
+import * as redisProvider from "../providers/redis";
 import RedisBoard from "./redis";
+import conf, { BOARD_PROVIDER } from "./config";
 
 export interface IBoardRank {
   username: string;
@@ -8,6 +10,8 @@ export interface IBoardRank {
 }
 
 export interface IBoard {
+  start(): Promise<void>;
+  stop(): Promise<void>;
   ready(): Promise<void>;
   live(): Promise<void>;
 
@@ -16,15 +20,10 @@ export interface IBoard {
   me(board: string, username: string): Promise<IBoardRank>;
 }
 
-export enum BOARD_PROVIDER {
-  REDIS = "redis",
-}
-
 export interface IBoardOptions {
   provider: BOARD_PROVIDER;
   redis: Redis | Cluster;
 }
-/*************  ✨ Codeium Command 🌟  *************/
 
 // Design Pattern: Factory, Proxy
 export default class Board implements IBoard {
@@ -37,6 +36,14 @@ export default class Board implements IBoard {
     }
 
     throw new Error(`Unknown board provider: ${options.provider}`);
+  }
+
+  async start(): Promise<void> {
+    await this.board.start();
+  }
+
+  async stop(): Promise<void> {
+    await this.board.stop();
   }
 
   async ready(): Promise<void> {
@@ -62,4 +69,11 @@ export default class Board implements IBoard {
   async me(board: string, username: string): Promise<IBoardRank> {
     return this.board.me(board, username);
   }
+}
+
+export function create() {
+  return new Board({
+    provider: conf.provider,
+    redis: redisProvider.create(conf.redis),
+  });
 }

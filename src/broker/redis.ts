@@ -3,11 +3,43 @@ import { IBroker, IBrokerOptions } from ".";
 
 export default class RedisBroker implements IBroker {
   private readonly publisher: Redis | Cluster;
+
   private readonly subscriber: Redis | Cluster;
 
   constructor(private options: IBrokerOptions) {
     this.publisher = options.publisher;
     this.subscriber = options.subscriber;
+  }
+
+  async start(): Promise<void> {
+    if (!this.isPublisherNotConnected()) {
+      await this.publisher.connect();
+    }
+
+    if (!this.isSubscriberNotConnected()) {
+      await this.subscriber.connect();
+    }
+  }
+
+  async stop(): Promise<void> {
+    if (!this.isPublisherNotConnected()) await this.publisher.quit();
+    if (!this.isSubscriberNotConnected()) await this.subscriber.quit();
+  }
+
+  private isPublisherNotConnected() {
+    return (
+      this.publisher.status === "wait" ||
+      this.publisher.status === "end" ||
+      this.publisher.status === "close"
+    );
+  }
+
+  private isSubscriberNotConnected() {
+    return (
+      this.publisher.status === "wait" ||
+      this.publisher.status === "end" ||
+      this.publisher.status === "close"
+    );
   }
 
   async ready(): Promise<void> {

@@ -1,5 +1,5 @@
-import Ajv from "ajv";
-import { ValidationError } from "../../errors";
+import validator, { ValidationError } from "../../validator";
+
 import { IBoard } from "../../board";
 
 const schema = {
@@ -27,8 +27,7 @@ const schema = {
   required: ["username", "score"],
   additionalProperties: false,
 };
-const ajv = new Ajv({ allErrors: true }); // options can be passed, e.g. {allErrors: true}
-const validate = ajv.compile(schema);
+const validate = validator.compile(schema);
 
 export interface IBoardScoreAUserInput {
   board: string;
