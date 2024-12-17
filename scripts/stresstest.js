@@ -127,7 +127,7 @@ export default async function () {
 
   const body = JSON.stringify(data);
   const params = {
-    headers: { "Content-Type": "application/json" },
+    headers: { "content-type": "application/json", "api-key": "changemenow" },
   };
 
   const res = http.post(url, body, params);

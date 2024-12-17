@@ -6,8 +6,3 @@ stresstest:
 
 test:
 	npm run test:coverage;
-
-cluster:
-	docker compose -f docker-compose.cluster.yaml up -d redis-cluster-creator;
-	sleep 15;
-	docker compose -f docker-compose.cluster.yaml up backend

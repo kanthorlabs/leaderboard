@@ -1,7 +1,8 @@
 import "dotenv/config";
 import { createServer } from "node:http";
-import Redis from "ioredis";
+import uptrace from "@uptrace/node";
 
+import "./otel";
 import logger from "./logger";
 import { create as createBoard } from "./board";
 import { create as createBroker } from "./broker";
@@ -46,6 +47,9 @@ async function main() {
       logger.error(`MAIN.BOARD.CLOSE.ERR: ${err.message}`);
     });
 
+    await uptrace.shutdown().catch((err) => {
+      logger.error(`MAIN.OTEL.SHUTDOWN.ERR: ${err.message}`);
+    });
     // wait a little bit before exiting
     await new Promise((resolve) => setTimeout(resolve, 1000));
     logger.info("Byee");
