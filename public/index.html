@@ -92,6 +92,8 @@
       const board = query.get("board") || "default";
       const username = query.get("username");
       const top_count = Number(query.get("top_count") || 10);
+      const titleEl = document.querySelector("h1");
+      titleEl.innerHTML = `Leaderboard: ${board}`;
 
       const socket = io(`/board-${board}`, {
         query: { username, top_count },
