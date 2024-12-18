@@ -45,6 +45,10 @@ It's worth worrying about connections because real-time communication requires a
 
 This means one server can efficiently serve the leaderboard. However, for high availability, we need to distribute the load across multiple servers. In this case, sticky sessions will also be required to ensure consistent client-server communication.
 
+## Solution
+
+Use Redis with `zincrby`, `zrevrange` and `zrevrank` functions
+
 ## System Design Documents
 
 ### Architecture Diagram
