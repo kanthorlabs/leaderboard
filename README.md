@@ -47,7 +47,11 @@ This means one server can efficiently serve the leaderboard. However, for high a
 
 ## Solution
 
-Use Redis with `zincrby`, `zrevrange` and `zrevrank` functions
+Use Redis with Sorted Sets functions
+
+- `zincrby`: Increment the score of a user in a leaderboard. Time complexity: O(log(N)) where N is the number of elements in the sorted set.
+- `zrevrange`: Return top X users from a leaderboard. Time complexity: O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
+- `zrevrank`: Get a rank of a user in a leaderboard. Time complexity: O(log(N))
 
 ## System Design Documents
 
